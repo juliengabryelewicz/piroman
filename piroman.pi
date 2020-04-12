@@ -1,0 +1,46 @@
+module piroman.
+
+roman_to_number(Atom) =>
+   AtomString:=Atom.to_string(),
+   Head:=head(AtomString),
+   Tail:=tail(AtomString),
+   number(Head, HeadValue),
+   character_analysis(HeadValue, HeadValue, Tail).
+
+private
+character_analysis(PrevRest, PrevValue, [Head|Tail]) ?=>
+   number(Head, Value),
+   if Value < PrevValue then
+      if Tail != [] then
+         RestValue:=head(Tail),
+         number(RestValue, NumberRest),
+         if NumberRest > Value then
+            Rest=PrevRest - Value
+         else
+            Rest=PrevRest + Value
+         end
+      else
+         Rest=PrevRest + Value
+      end
+   else
+      Rest=PrevRest + Value
+   end,
+   character_analysis(Rest, Value, Tail).
+
+private
+   character_analysis(Rest, _, []) => println(Rest).
+
+test =>
+   roman_to_number(mcmxc), %% 1990
+   roman_to_number(mmviii), %% 2008
+   roman_to_number(mdclxviii). %% 1668
+
+table
+index(-,-)
+number(i, 1).
+number(v, 5).
+number(x, 10).
+number(l, 50).
+number(c, 100).
+number(d, 500).
+number(m, 1000).
